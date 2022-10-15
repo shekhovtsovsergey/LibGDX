@@ -1,25 +1,37 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class MyGdxGame extends ApplicationAdapter {
 	SpriteBatch batch;
-	Texture img;
-	
+	Texture img, coinImg;
+	MyAnim anim;
+
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		coinImg = new Texture("g.png");
+		anim = new MyAnim("g.png",1,8,15, Animation.PlayMode.LOOP);
+
 	}
 
 	@Override
 	public void render () {
-		ScreenUtils.clear(1, 0, 0, 1);
+		ScreenUtils.clear(1, 1, 1, 1);
+
+		anim.setTime(Gdx.graphics.getDeltaTime());
+		float x = Gdx.input.getX() - anim.draw().getRegionWidth()/2.0f;
+		float y = Gdx.graphics.getHeight() - Gdx.input.getY() - anim.draw().getRegionHeight()/2.0f;
+
+
 		batch.begin();
-		batch.draw(img, 0, 0);
+		batch.draw(anim.draw(), x, y);
 		batch.end();
 	}
 	
@@ -27,5 +39,6 @@ public class MyGdxGame extends ApplicationAdapter {
 	public void dispose () {
 		batch.dispose();
 		img.dispose();
+		anim.dispose();
 	}
 }
