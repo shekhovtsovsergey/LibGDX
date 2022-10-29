@@ -10,14 +10,18 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class MyGdxGame extends ApplicationAdapter {
@@ -42,21 +46,39 @@ public class MyGdxGame extends ApplicationAdapter {
 		map = new TmxMapLoader().load("map/безымянный.tmx");
 		mapRenderer = new OrthogonalTiledMapRenderer(map);
 
-
 		//прямоугольник
 		myPhysX = new MyPhysX();//физика
 		BodyDef def = new BodyDef(); //тело
 		FixtureDef fixtureDef = new FixtureDef(); //фигура
+		PolygonShape polygonShape = new PolygonShape();
 		def.gravityScale = 1;//гравитация
 		def.type=BodyDef.BodyType.StaticBody;//типа тела двигается/нет
-		def.position.set(0,0);//где находится
-		PolygonShape polygonShape = new PolygonShape();
-		polygonShape.setAsBox(250,10);
+
+
+
 		fixtureDef.shape=polygonShape;
 		fixtureDef.density=1; //плотность
 		fixtureDef.friction=0; //скользить
 		fixtureDef.restitution=1; //прыгучесть
-		myPhysX.world.createBody(def).createFixture(fixtureDef).setUserData("Kubik");//создает тело приделывает фикстуру
+
+
+		MapLayer env = map.getLayers().get("env");
+		Array<RectangleMapObject> rect = env.getObjects().getByType(RectangleMapObject.class);
+		for (int i = 0; i < rect.size; i++) {
+			float x = rect.get(i).getRectangle().x;
+			float y = rect.get(i).getRectangle().y;
+			float w = rect.get(i).getRectangle().width/2;
+			float h = rect.get(i).getRectangle().height/2;
+			def.position.set(x,y);//где находится
+			polygonShape.setAsBox(w,h);
+			myPhysX.world.createBody(def).createFixture(fixtureDef).setUserData("Kubik");//создает тело приделывает фикстуру
+		}
+
+
+
+
+
+
 
 
 
@@ -82,6 +104,8 @@ public class MyGdxGame extends ApplicationAdapter {
 		fixtureDef.restitution=1; //прыгучесть
 		body = myPhysX.world.createBody(def);
 		body.createFixture(fixtureDef).setUserData("Kubik");//создает тело приделывает фикстуру
+
+
 
 
 		polygonShape.dispose();
@@ -138,7 +162,7 @@ public class MyGdxGame extends ApplicationAdapter {
 
 
 
-		ScreenUtils.clear(1, 1, 1, 1);
+		//ScreenUtils.clear(1, 1, 1, 1);
 
 
 		tmpA = stand;
@@ -148,15 +172,18 @@ public class MyGdxGame extends ApplicationAdapter {
 
 		if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) sound.play();
 
+
 		if (myInputProcessor.getOutString().contains("A")) {
 			dir = -1;
 			//x--;
 			tmpA = run;
-		};
+			body.applyForceToCenter(new Vector2(-10000, 0f), true);
+		}
 		if (myInputProcessor.getOutString().contains("D")){
 			dir = 1;
 			//x++;
 			tmpA = run;
+			body.applyForceToCenter(new Vector2(10000, 0f), true);
 		}
 		if (myInputProcessor.getOutString().contains("W")) {
 			y++;
@@ -167,10 +194,11 @@ public class MyGdxGame extends ApplicationAdapter {
 			tmpA = run;
 		}
 		if (myInputProcessor.getOutString().contains("Space")) {
-			x= Gdx.graphics.getWidth()/2 ;
-			y= Gdx.graphics.getHeight()/2 ;
-
+			//x= Gdx.graphics.getWidth()/2 ;
+			//y= Gdx.graphics.getHeight()/2 ;
+			body.applyForceToCenter(new Vector2(0, 100000f), true);
 		}
+
 
 		if (dir == -1) x-= step;
 		if (dir == 1) x+= step;
