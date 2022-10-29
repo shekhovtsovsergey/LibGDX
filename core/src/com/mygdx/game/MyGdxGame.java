@@ -75,25 +75,53 @@ public class MyGdxGame extends ApplicationAdapter {
 		}
 
 
+		def.type=BodyDef.BodyType.DynamicBody;//типа тела двигается/нет
+		env = map.getLayers().get("dyn");
+		rect = env.getObjects().getByType(RectangleMapObject.class);
+		for (int i = 0; i < rect.size; i++) {
+			float x = rect.get(i).getRectangle().x;
+			float y = rect.get(i).getRectangle().y;
+			float w = rect.get(i).getRectangle().width/2;
+			float h = rect.get(i).getRectangle().height/2;
+			def.position.set(x,y);//где находится
+			polygonShape.setAsBox(w,h);
+			fixtureDef.density=1; //плотность
+			fixtureDef.friction=0; //скользить
+			fixtureDef.restitution=1; //прыгучесть
+			myPhysX.world.createBody(def).createFixture(fixtureDef).setUserData("Kubik");//создает тело приделывает фикстуру
+		}
+
+		env = map.getLayers().get("hero");
+		RectangleMapObject hero = (RectangleMapObject) env.getObjects().get("Hero");
+		for (int i = 0; i < rect.size; i++) {
+			float x = hero.getRectangle().x;
+			float y = hero.getRectangle().y;
+			float w = hero.getRectangle().width/2;
+			float h = hero.getRectangle().height/2;
+			def.position.set(x,y);//где находится
+			polygonShape.setAsBox(w,h);
+			fixtureDef.density=1; //плотность
+			fixtureDef.friction=0; //скользить
+			fixtureDef.restitution=1; //прыгучесть
+			myPhysX.world.createBody(def).createFixture(fixtureDef).setUserData("Kubik");//создает тело приделывает фикстуру
+		}
 
 
 
-
-
-
-
-		//квадратики
+/*      //квадратики
 		def.type=BodyDef.BodyType.DynamicBody;//типа тела двигается/нет
 		for (int i = 0; i < 100; i++) {
 			def.position.set(MathUtils.random(-120,120),MathUtils.random(120,220));//где находится
 			polygonShape.setAsBox(10,10);
 			fixtureDef.shape=polygonShape;
+
 			fixtureDef.density=1; //плотность
 			fixtureDef.friction=0; //скользить
 			fixtureDef.restitution=1; //прыгучесть
 			myPhysX.world.createBody(def).createFixture(fixtureDef).setUserData("Kubik");//создает тело приделывает фикстуру
 
 		}
+*/
 
 
 		def.position.set(MathUtils.random(-120,120),MathUtils.random(120,220));//где находится
