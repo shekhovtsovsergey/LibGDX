@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.1" orientation="orthogonal" renderorder="right-down" width="33" height="13" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="60">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="33" height="13" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="60">
  <properties>
   <property name="coinsCnt" type="int" value="56"/>
  </properties>
@@ -131,7 +131,7 @@
     <property name="damage" type="float" value="1"/>
    </properties>
   </object>
-  <object id="38" x="127.909" y="184.818" width="48.1818" height="7.27273">
+  <object id="38" x="48.5757" y="176.818" width="48.1818" height="7.27273">
    <properties>
     <property name="damage" type="float" value="1"/>
    </properties>
@@ -146,7 +146,7 @@
     <property name="restitution" type="float" value="0.25"/>
    </properties>
   </object>
-  <object id="14" name="coins" x="71.167" y="42.3338" width="16.6667" height="19.3333">
+  <object id="14" name="coins" x="75.8337" y="45.0005" width="16.6667" height="19.3333">
    <properties>
     <property name="BodyType" value="DynamicBody"/>
     <property name="friction" type="float" value="0"/>
@@ -211,7 +211,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="5" name="hero">
+ <objectgroup id="5" name="hero" locked="1" parallaxx="2" parallaxy="2">
   <object id="23" name="Hero" x="205.659" y="77.0455" width="4.8125" height="4.875">
    <properties>
     <property name="BodyType" value="DynamicBody"/>

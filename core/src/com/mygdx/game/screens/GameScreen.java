@@ -195,8 +195,8 @@ public class GameScreen implements Screen {
         ScreenUtils.clear(Color.BLACK);
 
         //это камера
-        camera.position.x=body.getPosition().x;
-        camera.position.y=body.getPosition().y;
+        camera.position.x=body.getPosition().x / 100;
+        camera.position.y=body.getPosition().y / 100 ;
         //camera.zoom=0.125f;
         camera.update();
 
@@ -253,8 +253,8 @@ public class GameScreen implements Screen {
         if (tmpA.draw().isFlipX() & dir == 1) tmpA.draw().flip(true,false);
 
 
-        float x = body.getPosition().x  - 2.5f/camera.zoom;
-        float y = body.getPosition().y  - 2.5f/camera.zoom;
+        float x = body.getPosition().x - 2.5f/camera.zoom;
+        float y = body.getPosition().y - 2.5f/camera.zoom;
 
         tmpA.setTime(Gdx.graphics.getDeltaTime());
         //System.out.println(myInputProcessor.getOutString());
