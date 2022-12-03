@@ -195,8 +195,10 @@ public class GameScreen implements Screen {
         ScreenUtils.clear(Color.BLACK);
 
         //это камера
-        camera.position.x=body.getPosition().x / 100;
-        camera.position.y=body.getPosition().y / 100 ;
+        //camera.position.x=body.getPosition().x / 100;
+        //camera.position.y=body.getPosition().y / 100 ;
+        camera.position.x = body.getPosition().x * myPhysX.PPM;
+        camera.position.y = body.getPosition().y * myPhysX.PPM;
         //camera.zoom=0.125f;
         camera.update();
 
