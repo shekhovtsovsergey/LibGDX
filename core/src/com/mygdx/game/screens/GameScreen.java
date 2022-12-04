@@ -43,6 +43,7 @@ public class GameScreen implements Screen {
     private Body body;
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
+    private Sound sound_jump;
 
 
     public GameScreen(Game game) {
@@ -53,6 +54,7 @@ public class GameScreen implements Screen {
         map = new TmxMapLoader().load("map/безымянный.tmx");
         mapRenderer = new OrthogonalTiledMapRenderer(map);
 
+        img = new Texture("scene/bg.jpg");
         //прямоугольник
         myPhysX = new MyPhysX();//физика
         BodyDef def = new BodyDef(); //тело
@@ -152,18 +154,18 @@ public class GameScreen implements Screen {
 
 
 
-        music=Gdx.audio.newMusic(Gdx.files.internal("Sirenia_-_Dim_Days_Of_Dolor_47887109.mp3"));
+        /*music=Gdx.audio.newMusic(Gdx.files.internal("sounds/cf0fc01247f4fc1.mp3"));
         music.setVolume(0.00001f);
         music.setLooping(true);
         music.pause();
 
-        sound=Gdx.audio.newSound(Gdx.files.internal("77fae3ab5b341cd.mp3"));
+        sound=Gdx.audio.newSound(Gdx.files.internal("sounds/cf0fc01247f4fc1.mp3"));*/
 
         batch = new SpriteBatch();
         coinImg = new Texture("g.png");
 
-        stand = new MyAtlasAnim("atlas/unnamed.atlas","stand", 8, true, "Sirenia_-_Dim_Days_Of_Dolor_47887109.mp3");
-        run = new MyAtlasAnim("atlas/unnamed.atlas","run", 8, true, "Sirenia_-_Dim_Days_Of_Dolor_47887109.mp3");
+        stand = new MyAtlasAnim("atlas/unnamed.atlas","stand", 8, true, "sounds/cf0fc01247f4fc1.mp3");
+        run = new MyAtlasAnim("atlas/unnamed.atlas","run", 8, true, "sounds/cf0fc01247f4fc1.mp3");
         tmpA = stand;
 
         camera = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
@@ -178,7 +180,7 @@ public class GameScreen implements Screen {
 		camera.update();
 */
 
-
+        sound_jump = Gdx.audio.newSound(Gdx.files.internal("sounds/sound_jump.mp3"));
 
     }
 
@@ -195,8 +197,10 @@ public class GameScreen implements Screen {
         ScreenUtils.clear(Color.BLACK);
 
         //это камера
-        camera.position.x=body.getPosition().x / 100;
-        camera.position.y=body.getPosition().y / 100 ;
+        //camera.position.x=body.getPosition().x / 100;
+        //camera.position.y=body.getPosition().y / 100 ;
+        camera.position.x = body.getPosition().x * myPhysX.PPM;
+        camera.position.y = body.getPosition().y * myPhysX.PPM;
         //camera.zoom=0.125f;
         camera.update();
 
@@ -239,6 +243,7 @@ public class GameScreen implements Screen {
             tmpA = run;
         }
         if (myInputProcessor.getOutString().contains("Space")) {
+            sound_jump.play();
             //x= Gdx.graphics.getWidth()/2 ;
             //y= Gdx.graphics.getHeight()/2 ;
             body.applyForceToCenter(new Vector2(0, 100000f), true);
@@ -261,6 +266,7 @@ public class GameScreen implements Screen {
         //batch.setProjectionMatrix(camera.combined);//установка камеры
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
+        batch.draw(img, 0, 0);
         batch.draw(tmpA.draw(), x, y, 5/camera.zoom, 5/camera.zoom);
         batch.end();
 
@@ -312,3 +318,5 @@ public class GameScreen implements Screen {
 
 
 }
+
+
