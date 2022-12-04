@@ -3,6 +3,7 @@ package com.mygdx.game.screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -13,6 +14,7 @@ public class MenuScreen implements Screen {
     SpriteBatch batch;
     int x;
     Rectangle rectangle;
+    private final Music music;
 
 
 
@@ -23,6 +25,10 @@ public class MenuScreen implements Screen {
         x=Gdx.graphics.getWidth()/2 - sign.getWidth()/2;
         rectangle = new Rectangle(x,0, sign.getWidth(), sign.getHeight());
         batch = new SpriteBatch();
+        music = Gdx.audio.newMusic(Gdx.files.internal("sounds/ChecksForFree.mp3"));
+        music.setLooping(true);
+        music.setVolume(0.2f);
+        music.play();
 
     }
 
@@ -45,6 +51,8 @@ public class MenuScreen implements Screen {
             if (rectangle.contains(Gdx.input.getX(),Gdx.graphics.getHeight() - Gdx.input.getY())){
                 dispose();
                 game.setScreen(new GameScreen(game));
+                music.stop();
+
             }
         }
     }
@@ -74,6 +82,7 @@ public class MenuScreen implements Screen {
         this.fon.dispose();
         this.sign.dispose();
         this.batch.dispose();
+        this.music.dispose();
 
     }
 }
